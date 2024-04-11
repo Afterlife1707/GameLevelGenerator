@@ -1,4 +1,4 @@
 Flask==2.0.2
 numpy
-tensorflow==2.7.0
+tensorflow
 requests==2.26.0
