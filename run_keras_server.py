@@ -1,3 +1,7 @@
+import os
+# Set CPU as available physical device
+os.environ['CUDA_VISIBLE_DEVICES'] = '-1'
+
 # import the necessary packages
 from keras.applications import ResNet50
 from keras.preprocessing.image import img_to_array
