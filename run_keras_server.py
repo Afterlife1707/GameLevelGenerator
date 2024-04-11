@@ -17,16 +17,19 @@ import tensorflow as tf
 # initialize our Flask application and the Keras model
 app = flask.Flask(__name__)
 model = None
+model_path = 'VAE_Room_Generator_Decoder_1352.h5'
 
 def load_model():
     # load the pre-trained Keras model (here we are using a model
     # pre-trained on ImageNet and provided by Keras, but you can
     # substitute in your own networks just as easily)
     global model
-    model = tf.keras.models.load_model('C:/Users/aquil/Downloads/VAE_Room_Generator_Decoder_1352.h5')
+    # Load the model
+    model = tf.keras.models.load_model(model_path)
 
 def generate_image():
-    model = tf.keras.models.load_model('C:/Users/aquil/Downloads/VAE_Room_Generator_Decoder_1352.h5')
+    # Load the model
+    model = tf.keras.models.load_model(model_path)
     img_width = 16
     img_height = 16
     num_channels = 1
