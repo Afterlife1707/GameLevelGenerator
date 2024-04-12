@@ -14,9 +14,17 @@ app = flask.Flask(__name__)
 
 # Load the pre-trained Keras model
 model_path = 'VAE_Room_Generator_Decoder_1352.h5'
-model = tf.keras.models.load_model(model_path)
+model = None
+
+def load_model():
+    global model
+    model = tf.keras.models.load_model(model_path)
 
 def generate_image():
+    # Load the model
+    if model is None:
+        load_model()
+
     img_width = 16
     img_height = 16
     num_channels = 1
@@ -35,7 +43,7 @@ def generate_image():
     x = tf.keras.layers.Dense(20, activation='relu')(x)
 
     z_mu = tf.keras.layers.Dense(latent_dim, name='latent_mu')(x)  # Mean values of encoded input
-    z_sigma = tf.keras.layers.Dense(latent_dim, name='latent_sigma')(x)  # Std dev. (variance) of encoded input
+    z_sigma = tf.keras.layers.Dense(latent_dim, name='latent_sigma')(x)
 
     vector = np.random.normal(0, 1, size=(1, 50))
     X = model.predict(vector)
