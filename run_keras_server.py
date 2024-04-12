@@ -64,6 +64,7 @@ def predict():
     #     data["success"] = True
 
     # return flask.jsonify(data)
+    print("hello")
     return "10"
 
 
