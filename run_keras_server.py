@@ -4,7 +4,7 @@ import numpy as np
 import tensorflow as tf
 
 print("TensorFlow version:", tf.__version__)
-print("Keras version:", tf.keras.__getattr__("__version__"))
+print("Keras version:", tf.keras.__version__)
 
 # Set CPU as available physical device
 os.environ['CUDA_VISIBLE_DEVICES'] = '-1'
