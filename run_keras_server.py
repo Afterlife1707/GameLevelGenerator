@@ -52,18 +52,19 @@ def generate_image():
 
 @app.route("/predict", methods=["POST"])
 def predict():
-    data = {"success": False}
+    # data = {"success": False}
 
-    if flask.request.method == "POST":
-        image = generate_image()
-        print("Image has been generated")
+    # if flask.request.method == "POST":
+    #     image = generate_image()
+    #     print("Image has been generated")
 
-        results = np.asarray(image)
-        data["results"] = results.tolist()
+    #     results = np.asarray(image)
+    #     data["results"] = results.tolist()
 
-        data["success"] = True
+    #     data["success"] = True
 
-    return flask.jsonify(data)
+    # return flask.jsonify(data)
+    print("hello world")
 
 if __name__ == "__main__":
     print(("* Loading Keras model and Flask starting server..."
