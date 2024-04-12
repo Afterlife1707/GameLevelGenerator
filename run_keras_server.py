@@ -2,9 +2,10 @@ import os
 import flask
 import numpy as np
 import tensorflow as tf
+import keras
 
 print("TensorFlow version:", tf.__version__)
-print("Keras version:", tf.keras.__version__)
+print("Keras version:", keras.__version__)
 
 # Set CPU as available physical device
 os.environ['CUDA_VISIBLE_DEVICES'] = '-1'
