@@ -2,7 +2,7 @@ import os
 import flask
 import numpy as np
 import tensorflow as tf
-#custom call
+
 # Set CPU as available physical device
 os.environ['CUDA_VISIBLE_DEVICES'] = '-1'
 
@@ -52,7 +52,7 @@ def generate_image():
 
 @app.route("/predict", methods=["POST"])
 def predict():
-    # data = {"success": False}
+     # data = {"success": False}
 
     # if flask.request.method == "POST":
     #     image = generate_image()
@@ -69,4 +69,4 @@ def predict():
 if __name__ == "__main__":
     print(("* Loading Keras model and Flask starting server..."
         "please wait until server has fully started"))
-    app.run()
+    app.run(host='0.0.0.0')
