@@ -20,6 +20,8 @@ input_shape = (img_height, img_width, num_channels)
 
 latent_dim = 150 # Number of latent dim parameters
 
+model_path = 'VAE_Room_Generator_Decoder_1352.h5'
+
 input_img = Input(shape=input_shape, name='encoder_input')
 #x = RandomFlip(mode='horizontal_and_vertical')(input_img) # Already flipped images in data aug so this isn't really necessary
 x = Conv2D(filters=128, kernel_size=3, strides=(2,2), padding='same', activation='relu')(input_img)
@@ -62,7 +64,7 @@ class CustomLayer(keras.layers.Layer):
         self.add_loss(loss, inputs=inputs)
         return x
 
-model = load_model('C:/Users/aquil/Downloads/VAE_Room_Generator_Decoder_1352.h5')
+model = load_model(model_path)
 # model = load_model('C:/Users/aquil/Downloads/PixelCNN_Room_Generator_Model.keras', custom_objects={'CustomLayer': CustomLayer()}, safe_mode=False, compile=True)
 
 # model.summary()
