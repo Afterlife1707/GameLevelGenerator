@@ -2,7 +2,7 @@ import os
 import flask
 import numpy as np
 import tensorflow as tf
-
+#custom call
 # Set CPU as available physical device
 os.environ['CUDA_VISIBLE_DEVICES'] = '-1'
 
