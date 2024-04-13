@@ -89,18 +89,15 @@ def generate_image():
 
 @app.route("/predict", methods=["POST"])
 def predict():
-     data = {"success": False}
+     #data = {"success": False}
 
      if flask.request.method == "POST":
          image = generate_image()
-         print("Image has been generated")
+         results = np.round(image[:,:,0], 3).tolist()
 
-         results = image[:,:,0].tolist()
-         data["results"] = results
+         return flask.jsonify(results)
 
-         data["success"] = True
-
-     return flask.jsonify(data)
+     #return flask.jsonify(data)
 
 
 if __name__ == "__main__":
