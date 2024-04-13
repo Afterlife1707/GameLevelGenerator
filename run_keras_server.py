@@ -95,8 +95,8 @@ def predict():
          image = generate_image()
          print("Image has been generated")
 
-         results = np.asarray(image)
-         data["results"] = results.tolist()
+         results = image[:,:,0]
+         data["results"] = results
 
          data["success"] = True
 
