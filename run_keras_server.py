@@ -8,25 +8,23 @@ from keras import backend as K
 print("TensorFlow version:", tf.__version__)
 print("Keras version:", keras.__version__)
 
-# Set CPU as available physical device
-os.environ['CUDA_VISIBLE_DEVICES'] = '-1'
-
-# Disable eager execution
-tf.compat.v1.disable_eager_execution()
-
 # Initialize Flask application
 app = flask.Flask(__name__)
+
+# Set CPU as available physical device
+os.environ['CUDA_VISIBLE_DEVICES'] = '-1'
 
 # Load the pre-trained Keras model
 model_path = 'VAE_Room_Generator_Decoder_1352.h5'
 model = None
+decoder = None
 
 img_width = 16
 img_height = 16
 num_channels = 1
 input_shape = (img_height, img_width, num_channels)
 
-latent_dim = 150  # Number of latent dim parameters
+latent_dim = 50  # Number of latent dim parameters
 
 input_img = tf.keras.layers.Input(shape=input_shape, name='encoder_input')
 x = tf.keras.layers.Conv2D(filters=128, kernel_size=3, strides=(2, 2), padding='same', activation='relu')(input_img)
@@ -42,16 +40,12 @@ z_mu = tf.keras.layers.Dense(latent_dim, name='latent_mu')(x)  # Mean values of 
 z_sigma = tf.keras.layers.Dense(latent_dim, name='latent_sigma')(x)
 
 class CustomLayer(keras.layers.Layer):
-
     def vae_loss(self, x, z_decoded):
         x = K.flatten(x)
         z_decoded = K.flatten(z_decoded)
 
         # Reconstruction loss (as we used sigmoid activation we can use binarycrossentropy)
         recon_loss = keras.metrics.binary_crossentropy(x, z_decoded) * img_width * img_height
-
-        # KL divergence
-        #kl_loss = -5e-4 * K.mean(1 + z_sigma - K.square(z_mu) - K.exp(z_sigma), axis=-1)
 
         # KL divergence loss
         kl_loss = 1 + z_sigma - K.square(z_mu) - K.exp(z_sigma)
@@ -70,16 +64,26 @@ class CustomLayer(keras.layers.Layer):
 
 def load_model():
     global model
+    global decoder
     model = tf.keras.models.load_model(model_path)
     decoder = keras.saving.load_model(model_path, custom_objects={'CustomLayer': CustomLayer()}, safe_mode=False, compile=True)
 
-def generate_image():
-    # Load the model
-    if model is None:
-        load_model()
+# Load the model when the application starts
+load_model()
 
-    vector = np.random.normal(0, 1, size=(1, 50))
-    X = model.predict(vector)
+# Preprocess input vectors
+preprocessed_vectors = np.random.normal(0, 1, size=(100, latent_dim))  # Adjust size as needed
+
+# Precompute and cache model predictions for preprocessed vectors
+cached_predictions = model.predict(preprocessed_vectors)
+
+def generate_image():
+    # Randomly select a preprocessed vector
+    random_index = np.random.randint(0, len(preprocessed_vectors))
+    vector = preprocessed_vectors[random_index]
+
+    # Use the cached prediction corresponding to the selected vector
+    X = cached_predictions[random_index]
 
     return X
 
