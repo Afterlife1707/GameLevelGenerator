@@ -1,5 +1,4 @@
 from keras import layers
-#!pip install keras --upgrade # We need Keras 3 for the PixelCNN Model, certain things will not work otherwise i.e. ops
 import tensorflow as tf
 import matplotlib.pyplot as plt
 from keras import ops
@@ -8,10 +7,14 @@ import tensorflow as tf
 import numpy as np
 import keras
 from keras.saving import load_model
+import flask
 
 num_classes = 1
 input_shape = (8, 8, 1)
 n_residual_blocks = 4
+
+# Initialize Flask application
+app = flask.Flask(__name__)
 
 class PixelConvLayer(layers.Layer):
     def __init__(self, mask_type, **kwargs):
@@ -86,7 +89,12 @@ def deprocess_image(x):
     x = np.clip(x, 0, 255).astype("uint8")
     return x
 
-img = deprocess_image(np.squeeze(pixels[0], -1))
-print(img)
-plt.imshow(img, cmap='gray_r')
-plt.show()
+@app.route("/predict", methods=["POST"])
+def predict():
+    img = deprocess_image(np.squeeze(pixels[0], -1)).tolist()
+    return flask.jsonify(img)
+
+if __name__ == "__main__":
+    print(("* Loading Keras model and Flask starting server..."
+        "please wait until server has fully started"))
+    app.run(host='0.0.0.0')
