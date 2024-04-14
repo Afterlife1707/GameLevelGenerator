@@ -15,7 +15,7 @@ app = flask.Flask(__name__)
 os.environ['CUDA_VISIBLE_DEVICES'] = '-1'
 
 # Load the pre-trained Keras model
-model_path = 'VAE_Room_Generator_Decoder_1352.h5'
+model_path = 'VAE_Room_Generator_Decoder_49_1208.h5'
 model = None
 decoder = None
 
