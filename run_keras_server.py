@@ -24,7 +24,7 @@ img_height = 16
 num_channels = 1
 input_shape = (img_height, img_width, num_channels)
 
-latent_dim = 50  # Number of latent dim parameters
+latent_dim = 100  # Number of latent dim parameters
 
 input_img = tf.keras.layers.Input(shape=input_shape, name='encoder_input')
 x = tf.keras.layers.Conv2D(filters=128, kernel_size=3, strides=(2, 2), padding='same', activation='relu')(input_img)
