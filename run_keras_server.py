@@ -469,7 +469,7 @@ def predict():
 
      if flask.request.method == "POST":
          image = generate_image()
-         results = np.round(image[:,:,0], 3).tolist()
+         results = np.round(image, 3).tolist()
 
          return flask.jsonify(results)
 
