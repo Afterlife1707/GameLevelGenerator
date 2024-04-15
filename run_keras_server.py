@@ -442,8 +442,11 @@ preprocessed_vectors = np.random.normal(0, 1, size=(100, latent_dim))
 
 # Precompute and cache model predictions for preprocessed vectors
 cached_predictions = model.predict(preprocessed_vectors)
-print("Shape of cached_predictions:", cached_predictions.shape)  # Add this line to check the shape
+# Average the predictions along the first axis
+cached_predictions = np.mean(cached_predictions, axis=0)
 
+# Reshape the cached_predictions if necessary
+cached_predictions = cached_predictions.reshape((ROOM_SIZE, ROOM_SIZE))
 
 
 def generate_image():
