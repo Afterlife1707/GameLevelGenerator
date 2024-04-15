@@ -450,6 +450,7 @@ cached_predictions = cached_predictions.reshape((ROOM_SIZE, ROOM_SIZE))
 
 
 def generate_image():
+
     # Apply correction algorithms
     corrected_image = correct_edges(cached_predictions)
     corrected_image = correct_interior_walls(corrected_image)
@@ -460,13 +461,7 @@ def generate_image():
     corrected_image = delete_alone_tiles(corrected_image)
     # Additional corrections can be applied here if needed
 
-    # Flatten the cached predictions
-    flattened_predictions = cached_predictions.reshape((100, 256))
-    # Pass the flattened predictions through the decoder
-    reconstructed_images = decoder.predict(flattened_predictions)
-
-    return reconstructed_images
-
+    return corrected_image
 
 @app.route("/predict", methods=["POST"])
 def predict():
