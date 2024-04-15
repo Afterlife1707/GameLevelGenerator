@@ -438,10 +438,13 @@ def load_model():
 load_model()
 
 # Preprocess input vectors
-preprocessed_vectors = np.random.normal(0, 1, size=(100, latent_dim))  # Adjust size as needed
+preprocessed_vectors = np.random.normal(0, 1, size=(100, latent_dim))
 
 # Precompute and cache model predictions for preprocessed vectors
 cached_predictions = model.predict(preprocessed_vectors)
+if cached_predictions.shape != (ROOM_SIZE, ROOM_SIZE):
+    cached_predictions = cached_predictions.reshape((ROOM_SIZE, ROOM_SIZE))
+
 
 def generate_image():
 
