@@ -20,12 +20,12 @@ model_path = 'VAE_Room_Generator_Decoder_1352.h5'
 model = None
 decoder = None
 
+latent_dim = 50  # Dimensionality of the latent space
+
 img_width = 16
 img_height = 16
 num_channels = 1
 input_shape = (img_height, img_width, num_channels)
-
-latent_dim = 50  # Number of latent dim parameters
 
 input_img = tf.keras.layers.Input(shape=input_shape, name='encoder_input')
 x = tf.keras.layers.Conv2D(filters=128, kernel_size=3, strides=(2, 2), padding='same', activation='relu')(input_img)
@@ -64,7 +64,6 @@ class CustomLayer(keras.layers.Layer):
         return x
 
 n = 32  # Total number of rooms to generate and display
-latent_dim = 100  # Dimensionality of the latent space
 ROOM_SIZE = 16  # Assuming a room size of 16x16 tiles
 tiles_per_row = 8  # Number of room tiles per row for display
 num_categories = 9  # Since you have tiles 0 through 8
@@ -439,10 +438,16 @@ def load_model():
 load_model()
 
 # Preprocess input vectors
-preprocessed_vectors = np.random.normal(0, 1, size=(100, latent_dim))  # Adjust size as needed
+preprocessed_vectors = np.random.normal(0, 1, size=(100, latent_dim))
 
 # Precompute and cache model predictions for preprocessed vectors
 cached_predictions = model.predict(preprocessed_vectors)
+# Average the predictions along the first axis
+cached_predictions = np.mean(cached_predictions, axis=0)
+
+# Reshape the cached_predictions if necessary
+cached_predictions = cached_predictions.reshape((ROOM_SIZE, ROOM_SIZE))
+
 
 def generate_image():
 
@@ -464,7 +469,7 @@ def predict():
 
      if flask.request.method == "POST":
          image = generate_image()
-         results = np.round(image[:,:,0], 3).tolist()
+         results = np.round(image, 3).tolist()
 
          return flask.jsonify(results)
 
