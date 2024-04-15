@@ -20,6 +20,8 @@ model_path = 'VAE_Room_Generator_Decoder_1352.h5'
 model = None
 decoder = None
 
+latent_dim = 50  # Dimensionality of the latent space
+
 img_width = 16
 img_height = 16
 num_channels = 1
@@ -62,7 +64,6 @@ class CustomLayer(keras.layers.Layer):
         return x
 
 n = 32  # Total number of rooms to generate and display
-latent_dim = 50  # Dimensionality of the latent space
 ROOM_SIZE = 16  # Assuming a room size of 16x16 tiles
 tiles_per_row = 8  # Number of room tiles per row for display
 num_categories = 9  # Since you have tiles 0 through 8
